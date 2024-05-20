@@ -31,13 +31,16 @@ install -dm755 "$MODULES_DIR/thelounge"
 # Fetch the lock file so that we actually get the pinned deps that we want
 curl -O "https://raw.githubusercontent.com/thelounge/thelounge/$NPMVERSION/yarn.lock"
 
+alias yarn=yarnpkg
 # Install the package itself
 # we on purposes don't use yarn global add, because with it --ignore-scripts
 # is pointless: https://github.com/yarnpkg/yarn/issues/8291 but we tried
-yarn add --no-default-rc --frozen-lockfile \
+yarn add --no-default-rc \
+	--frozen-lockfile \
 	--prod --non-interactive --ignore-scripts \
 	--cache-folder "$CACHE" --modules-folder "$MODULES_DIR" \
-	"thelounge@${NPMVERSION}"
+	../thelounge
+	#"thelounge@${NPMVERSION}"
 
 # Write .thelounge_home to set correct system config directory
 echo "/etc/thelounge" > "$MODULES_DIR/thelounge/.thelounge_home"
