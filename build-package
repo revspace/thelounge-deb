@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Exit the script if any of the commands fail
 set -e
@@ -29,7 +29,8 @@ install -dm755 "$DESTDIR/usr/bin"
 install -dm755 "$MODULES_DIR/thelounge"
 
 # Fetch the lock file so that we actually get the pinned deps that we want
-curl -O "https://raw.githubusercontent.com/thelounge/thelounge/$NPMVERSION/yarn.lock"
+# curl -O "https://raw.githubusercontent.com/thelounge/thelounge/$NPMVERSION/yarn.lock"
+cp ../thelounge/yarn.lock .
 
 alias yarn=yarnpkg
 # Install the package itself
@@ -38,12 +39,13 @@ alias yarn=yarnpkg
 yarn add --no-default-rc \
 	--frozen-lockfile \
 	--prod --non-interactive --ignore-scripts \
+	--ignore-engines \
 	--cache-folder "$CACHE" --modules-folder "$MODULES_DIR" \
 	../thelounge
 	#"thelounge@${NPMVERSION}"
 
 # Write .thelounge_home to set correct system config directory
-echo "/etc/thelounge" > "$MODULES_DIR/thelounge/.thelounge_home"
+echo "/var/lib/thelounge" > "$MODULES_DIR/thelounge/.thelounge_home"
 
 # manually write the binary link
 ln -s "${MODULES_DIR#$DESTDIR}/thelounge/index.js" "$DESTDIR/usr/bin/thelounge"
