@@ -1,2 +1,5 @@
-/pkg/
-/deb/
+pkg/
+deb/
+cache/
+package.json
+yarn.lock
