@@ -3,16 +3,20 @@ Description=The Lounge (IRC client)
 After=network-online.target
 Wants=network-online.target
 
-
 [Service]
 User=thelounge
 Group=thelounge
 Type=simple
+Environment="THELOUNGE_HOME=/var/lib/thelounge"
+Environment="SHARP_FORCE_GLOBAL_LIBVIPS=true"
 ExecStart=/usr/bin/thelounge start
-ProtectSystem=yes
+ProtectSystem=strict
+ReadOnlyPaths=/etc/thelounge/config.js /usr/lib/thelounge
 ProtectHome=yes
 NoNewPrivileges=yes
 PrivateTmp=yes
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+StateDirectory=thelounge
 
 [Install]
 WantedBy=multi-user.target
